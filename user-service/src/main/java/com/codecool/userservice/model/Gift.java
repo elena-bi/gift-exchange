@@ -7,10 +7,22 @@ import javax.persistence.*;
 @Entity
 public class Gift {
 
-    private final Long id;
-    private final String name;
-    private final Long photoId;
-    private final Double value;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Transient
+    private String name;
+
+    @Transient
+    private Long photoId;
+
+    @Transient
+    private Double value;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User owner;
 
     @Enumerated
