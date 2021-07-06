@@ -72,4 +72,20 @@ public class Gift {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhotoId(Long photoId) {
+        this.photoId = photoId;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
 }
