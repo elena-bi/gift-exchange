@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "account")   // user is a special keyword in SQL
 public class User implements UserDetails {
 
     @Id
@@ -19,8 +20,8 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id"))
     @Column(name = "role_id")
     private Set<UserRole> roles;
 

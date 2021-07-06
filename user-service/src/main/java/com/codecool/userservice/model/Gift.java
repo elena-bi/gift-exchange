@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "gift_basic")
 public class Gift {
 
     @Id
@@ -21,7 +22,7 @@ public class Gift {
     private Double value;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account_id")
     @JsonBackReference
     private User owner;
 
