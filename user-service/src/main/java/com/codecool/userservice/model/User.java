@@ -24,6 +24,7 @@ public class User implements UserDetails {
     @Column(name = "role_id")
     private Set<UserRole> roles;
 
+
     private String email;
     private String address;
     private double credit;
@@ -41,8 +42,7 @@ public class User implements UserDetails {
         this.email = email;
         this.address = "";
         this.credit = 0.0;
-        this.giftsToReceive = new HashSet<>();
-        this.giftsToSell = new HashSet<>();
+        this.gifts = new HashSet<>();
     }
 
     protected User() {
@@ -121,34 +121,39 @@ public class User implements UserDetails {
     }
 
     public Set<Gift> getGiftsToSell() {
-        return new HashSet<>(giftsToSell);
+        return gifts.stream()
+                .filter(gift -> gift.getState().equals(GiftState.TO_SELL))
+                .collect(Collectors.toSet());
     }
 
     public void addGiftToSell(Gift gift) {
-        this.giftsToSell.add(gift);
+        gift.setOwner(this);
+        gift.setState(GiftState.TO_SELL);
+        this.gifts.add(gift);
     }
 
-    public void removeGiftToSell(Gift gift) {
-        this.giftsToSell.remove(gift);
+    public void removeGift(Gift gift) {
+        this.gifts.remove(gift);
 
     }
 
     public Set<Gift> getGiftsToReceive() {
-        return new HashSet<>(giftsToReceive);
+        return gifts.stream()
+                .filter(gift -> gift.getState().equals(GiftState.TO_RECEIVE))
+                .collect(Collectors.toSet());
     }
 
     public void addGiftToReceive(Gift gift) {
-        this.giftsToReceive.add(gift);
+        gift.setOwner(this);
+        gift.setState(GiftState.TO_RECEIVE);
+        this.gifts.add(gift);
     }
 
-    public void removeGiftToReceive(Gift gift) {
-        this.giftsToReceive.remove(gift);
-    }
+
 
     public void markGiftToSell(Gift gift) {
-        if (giftsToReceive.contains(gift)) {
-            giftsToSell.add(gift);
-            giftsToReceive.remove(gift);
+        if (gifts.contains(gift)) {
+            gift.setState(GiftState.TO_SELL);
         }
     }
 }
