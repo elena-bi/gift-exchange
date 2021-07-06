@@ -1,24 +1,37 @@
 package com.codecool.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
+@Entity
 public class User implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String password;
+
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_id")
     private Set<UserRole> roles;
 
     private String email;
     private String address;
     private double credit;
-    private Set<Gift> giftsToSell;
-    private Set<Gift> giftsToReceive;
+
+    @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
+    private Set<Gift> gifts;
+
 
     public User(Long id, String username, String password, Set<UserRole> roles, String email) {
         this.id = id;
@@ -30,6 +43,13 @@ public class User implements UserDetails {
         this.credit = 0.0;
         this.giftsToReceive = new HashSet<>();
         this.giftsToSell = new HashSet<>();
+    }
+
+    protected User() {
+        this.roles = Collections.emptySet();
+        this.address = "";
+        this.credit = -0.000001;
+        this.gifts = Collections.emptySet();
     }
 
     @Override
