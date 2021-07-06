@@ -124,4 +124,11 @@ public class User implements UserDetails {
     public void removeGiftToReceive(Gift gift) {
         this.giftsToReceive.remove(gift);
     }
+
+    public void markGiftToSell(Gift gift) {
+        if (giftsToReceive.contains(gift)) {
+            giftsToSell.add(gift);
+            giftsToReceive.remove(gift);
+        }
+    }
 }
