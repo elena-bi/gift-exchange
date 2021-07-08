@@ -2,34 +2,43 @@ package com.codecool.giftservice.model;
 
 //import org.hibernate.annotations.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
 @Table(name = "gift")
-public class Gift {
+public class Gift implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue
     private Long id;
     private String name;
-    private String image;
+
+    @OneToMany(mappedBy="forGift")
+    @JsonManagedReference
+    private List<Image> images;
     private Double value;
-//    private User owner;
+    private Long ownerId;
 
 
-    public Gift(Long id, String name, String image, Double value) {
+    public Gift(Long id, String name, List<Image> images, Double value, Long owner) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.images = images;
         this.value = value;
+        this.ownerId = owner;
     }
 
-    public Gift(String name, String image, Double value) {
+    public Gift(String name, List<Image> images, Double value, Long owner) {
         this.name = name;
-        this.image = image;
+        this.images = images;
         this.value = value;
+        this.ownerId = owner;
     }
 
     public Gift() {
@@ -51,14 +60,6 @@ public class Gift {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public Double getValue() {
         return value;
     }
@@ -67,25 +68,32 @@ public class Gift {
         this.value = value;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Gift)) return false;
-        Gift gift = (Gift) o;
-        return Objects.equals(id, gift.id) && Objects.equals(name, gift.name) && Objects.equals(image, gift.image) && Objects.equals(value, gift.value);
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, image, value);
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public void addImage(Image image) {
+        images.add(image);
+    }
+
 
     @Override
     public String toString() {
         return "Gift{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", image='" + image + '\'' +
                 ", value=" + value +
                 '}';
     }
