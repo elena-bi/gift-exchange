@@ -13,7 +13,7 @@ public class DebugOutput implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(testService.getAnImageForId(1L));
-        System.out.println(testService.deleteGiftById(1L));
+//        System.out.println(testService.getAnImageForId(1L));
+//        System.out.println(testService.deleteGiftById(1L));
     }
 }
