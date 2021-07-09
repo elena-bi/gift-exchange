@@ -1,6 +1,7 @@
 package com.codecool.userservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -13,12 +14,15 @@ public class Gift {
     private Long id;
 
     @Transient
+    @JsonIgnore
     private String name;
 
     @Transient
+    @JsonIgnore
     private Long photoId;
 
     @Transient
+    @JsonIgnore
     private Double value;
 
     @ManyToOne

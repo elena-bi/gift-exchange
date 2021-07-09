@@ -1,5 +1,6 @@
 package com.codecool.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,8 @@ public class User implements UserDetails {
     private Long id;
 
     private String username;
+
+    @JsonIgnore
     private String password;
 
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
@@ -93,6 +96,10 @@ public class User implements UserDetails {
     // end of UserDetails overrides
 
 
+    public Long getId() {
+        return id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -156,5 +163,19 @@ public class User implements UserDetails {
         if (gifts.contains(gift)) {
             gift.setState(GiftState.TO_SELL);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", credit=" + credit +
+                ", gifts=" + gifts +
+                '}';
     }
 }
